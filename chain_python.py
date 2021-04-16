@@ -16,14 +16,14 @@ class Chain:
     def add_to_chain(self, data):
         temp_chain = {}
         if self.id == 0:
-            temp_chain["prev_hash"] = "shyngys" # You can put 0 or empty string. I put shyngys (my name) for fun. 
+            temp_chain["prev_hash"] = "shyngys"
         else:
             temp_chain["prev_hash"] = list(self.chain.keys())[-1]
         temp_chain["id"] = self.id
         temp_chain["time"] = time()
         temp_chain["data"] = data
         string_from_dictionary = json.dumps(temp_chain)
-        hash = self.compute_hash(string_from_dictionary)
+        hash = self._compute_hash_(string_from_dictionary)
         self.chain[hash] = {
             "id":   temp_chain["id"],
             "time": temp_chain["time"],
@@ -31,13 +31,15 @@ class Chain:
         }
         self.id = self.id + 1
 
+    def _compute_hash_(self, string_from_dictionary): # no need to reach from outside
+        return sha256(string_from_dictionary.encode()).hexdigest()
+
     def values(self):
         return self.chain
 
-    def compute_hash(self, string_from_dictionary):
-        return sha256(string_from_dictionary.encode()).hexdigest()
+    def find_by_hash(self, hash):
+        return self.chain[hash]
 
-# usage example
 chain = Chain()
 chain.add_to_chain({
     "sent_from": "Abhi",
