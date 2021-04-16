@@ -38,7 +38,7 @@ class Chain:
         return self.chain
 
     def find_by_hash(self, hash):
-        return self.chain[hash]
+        return  self.chain.get(hash, "Hash not found")
 
 chain = Chain()
 chain.add_to_chain({
@@ -47,3 +47,4 @@ chain.add_to_chain({
 })
 chain.add_to_chain(1)
 print(chain.values())
+print(chain.find_by_hash("hi"))
